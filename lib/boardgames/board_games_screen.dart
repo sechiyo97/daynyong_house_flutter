@@ -1,13 +1,12 @@
-import 'package:daynyong_house_flutter/boardgames/component/board_game_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
-
 import '../component/custom_scaffold.dart';
+import 'component/board_game_tile.dart';
 import 'model/board_game.dart';
 
 class BoardGamesScreen extends StatefulWidget {
-  const BoardGamesScreen({super.key});
+  const BoardGamesScreen({Key? key}) : super(key: key);
 
   @override
   State<BoardGamesScreen> createState() => _BoardGamesScreenState();
@@ -15,8 +14,11 @@ class BoardGamesScreen extends StatefulWidget {
 
 class _BoardGamesScreenState extends State<BoardGamesScreen> {
   late Future<List<BoardGame>> boardGames;
-  final TextEditingController _searchController = TextEditingController();
-  String _selectedSearchType = '이름'; // 검색 기준 초기값
+  final TextEditingController _searchNameController = TextEditingController();
+  String _selectedSearchCategory = '전체';
+  String? _searchPlayerCount;
+  List<String> categories = ['전체', '전략', '추상전략', '파티', '패밀리', '퍼즐', '테마틱'];
+  bool _showSearchOptions = false; // 검색 옵션 표시 상태
 
   @override
   void initState() {
@@ -30,27 +32,13 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
     return csvList.sublist(1).map((row) => BoardGame.fromCsvRow(row)).toList();
   }
 
-  List<BoardGame> filterData(List<BoardGame> data, String searchQuery) {
-    if (searchQuery.isEmpty) return data;
+  List<BoardGame> filterData(List<BoardGame> data) {
     return data.where((game) {
-      switch (_selectedSearchType) {
-        case '이름':
-          return game.name.toString().toLowerCase().contains(searchQuery.toLowerCase());
-        case '분류':
-          return game.category.toString().toLowerCase().contains(searchQuery.toLowerCase());
-        case '플레이 인원':
-          return game.playerCount
-              .toString()
-              .split('~')
-              .any((range) => range.contains(searchQuery));
-        case '베스트 인원':
-          return game.bestFor
-              .toString()
-              .split('~')
-              .any((range) => range.contains(searchQuery));
-        default:
-          return false;
-      }
+      bool matchesName = _searchNameController.text.isEmpty || game.name.toLowerCase().contains(_searchNameController.text.toLowerCase());
+      bool matchesCategory = _selectedSearchCategory == '전체' || game.category == _selectedSearchCategory;
+      bool matchesPlayerCount = _searchPlayerCount == null || game.playerCount.contains(_searchPlayerCount!);
+
+      return matchesName && matchesCategory && matchesPlayerCount;
     }).toList();
   }
 
@@ -59,39 +47,42 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
     return CustomScaffold(
       appBar: AppBar(
         title: const Text('보드게임 목록'),
+        actions: [
+          IconButton(
+            icon: Icon(_showSearchOptions ? Icons.search_off : Icons.search),
+            onPressed: () {
+              setState(() {
+                _showSearchOptions = !_showSearchOptions; // 검색 옵션 표시 상태 토글
+              });
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          Padding(
+          if (_showSearchOptions) Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: '검색',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _searchController.clear();
-                    setState(() {});
-                  },
-                ),
+              controller: _searchNameController,
+              decoration: const InputDecoration(
+                labelText: '이름으로 검색',
+                suffixIcon: Icon(Icons.search),
               ),
               onChanged: (value) => setState(() {}),
             ),
           ),
-          Padding(
+          if (_showSearchOptions) Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: DropdownButton<String>(
-              value: _selectedSearchType,
+              value: _selectedSearchCategory,
               onChanged: (value) {
                 if (value != null) {
                   setState(() {
-                    _selectedSearchType = value;
+                    _selectedSearchCategory = value;
                   });
                 }
               },
-              items: <String>['이름', '분류', '플레이 인원', '베스트 인원']
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: categories.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -99,12 +90,27 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
               }).toList(),
             ),
           ),
+          if (_showSearchOptions) Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: const InputDecoration(
+                labelText: '플레이 인원으로 검색',
+                suffixIcon: Icon(Icons.people),
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                setState(() {
+                  _searchPlayerCount = value;
+                });
+              },
+            ),
+          ),
           Expanded(
             child: FutureBuilder<List<BoardGame>>(
               future: boardGames,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var filteredData = filterData(snapshot.data!.sublist(1), _searchController.text);
+                  var filteredData = filterData(snapshot.data!);
                   return ListView.builder(
                     itemCount: filteredData.length,
                     itemBuilder: (context, index) {
