@@ -1,5 +1,6 @@
 import 'package:daynyong_house_flutter/boardgames/board_games_screen.dart';
 import 'package:daynyong_house_flutter/cocktails/cocktails_screen.dart';
+import 'package:daynyong_house_flutter/wishlists/wishlists_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,6 +27,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/cocktails',
           page: () => const CocktailsScreen(),
+        ),
+        GetPage(
+          name: '/wishlists',
+          page: () => const WishlistsScreen(),
         ),
       ],
     );

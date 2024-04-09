@@ -33,6 +33,12 @@ class _MainScreenState extends State<MainScreen> {
               Get.toNamed("/cocktails");
             },
           ),
+          ElevatedButton(
+            child: const Text("집들이 선물 위시리스트"),
+            onPressed: () {
+              Get.toNamed("/wishlists");
+            },
+          ),
         ],
       ),
     );
