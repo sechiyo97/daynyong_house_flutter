@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daynyong_house_flutter/component/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,11 +38,12 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     String imageName = 'assets/images/main_screen_image_$_imageIndex.jpeg';
-    return Scaffold(
+    return CustomScaffold(
+      backgroundColor: Colors.black.withOpacity(0.05),
       appBar: AppBar(
-        title: const Text("Day & Nyong"),
+        title: const Text("Day & Nyong & Q"),
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: () => setState(() => _isMenuVisible = !_isMenuVisible),
         ),
         backgroundColor: Colors.transparent,

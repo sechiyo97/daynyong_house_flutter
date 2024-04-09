@@ -10,7 +10,8 @@ class BoardGameTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      color: Colors.white,
+      elevation: 0,
       margin: const EdgeInsets.all(8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -27,6 +28,7 @@ class BoardGameTile extends StatelessWidget {
             const SizedBox(height: 10),
             Wrap(
               spacing: 10,
+              runSpacing: 10,
               children: <Widget>[
                 if (game.expansion.isNotEmpty)
                   Chip(

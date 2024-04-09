@@ -85,8 +85,10 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      backgroundColor: Colors.black.withOpacity(0.05),
       appBar: AppBar(
-        title: const Text('보드게임 목록'),
+        backgroundColor: Colors.black.withOpacity(0.0),
+        title: const Text('Board Games'),
         actions: [
           IconButton(
             icon: Icon(_showSearchOptions ? Icons.search_off : Icons.search),

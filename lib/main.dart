@@ -18,6 +18,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: const MainScreen(),
+      theme: ThemeData(
+        colorScheme: const ColorScheme.light(
+          primary: Colors.black,
+        ),
+      ),
       getPages: [
         GetPage(
           name: '/main',
