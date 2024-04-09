@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
           ElevatedButton(
             child: const Text("칵테일 메뉴"),
             onPressed: () {
-              Get.toNamed("/boardgames");
+              Get.toNamed("/cocktails");
             },
           ),
         ],
