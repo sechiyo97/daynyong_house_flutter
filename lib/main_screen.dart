@@ -91,9 +91,9 @@ class _MainScreenState extends State<MainScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildMenuButton("보드게임 목록", "/boardgames"),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             _buildMenuButton("칵테일 메뉴", "/cocktails"),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             _buildMenuButton("위시리스트", "/wishlists"),
           ],
         ),
@@ -102,20 +102,14 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildMenuButton(String title, String route) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.white.withOpacity(0),
-        textStyle: TextStyle(fontSize: 20),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+    return GestureDetector(
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 20, color: Colors.white),
       ),
-      onPressed: () {
+      onTap: () {
         Get.toNamed(route);
       },
-      child: Text(title),
     );
   }
 }
