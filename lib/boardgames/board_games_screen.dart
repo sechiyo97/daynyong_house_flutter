@@ -1,3 +1,4 @@
+import 'package:daynyong_house_flutter/boardgames/component/board_game_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
@@ -108,23 +109,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
                     itemCount: filteredData.length,
                     itemBuilder: (context, index) {
                       BoardGame game = filteredData[index];
-                      return Card(
-                        child: ListTile(
-                          title: Text(game.name), // 게임 이름
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('확장: ${game.expansion}'),
-                              Text('분류: ${game.category}'),
-                              Text('긱웨이트: ${game.geekWeight}'),
-                              Text('플레이 인원: ${game.playerCount}'),
-                              Text('베스트 인원: ${game.bestFor}'),
-                              Text('플레이 타임: ${game.playTime}'),
-                            ],
-                          ),
-                          isThreeLine: true,
-                        ),
-                      );
+                      return BoardGameTile(game: game);
                     },
                   );
                 } else if (snapshot.hasError) {
