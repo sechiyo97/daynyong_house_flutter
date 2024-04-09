@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:daynyong_house_flutter/boardgames/component/link_icon.dart';
 import 'package:flutter/material.dart';
 
 import '../model/wishlist.dart';
@@ -17,17 +20,26 @@ class WishlistTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              wishlist.name,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                Text(
+                  wishlist.name,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                if (wishlist.link != null) const SizedBox(width: 10),
+                if (wishlist.link != null)
+                  LinkIcon(
+                    url: wishlist.link!,
+                  )
+              ],
             ),
             const SizedBox(height: 10),
             Text(
               wishlist.description,
-            )
+            ),
           ],
         ),
       ),
