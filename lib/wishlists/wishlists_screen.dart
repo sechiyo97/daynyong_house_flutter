@@ -22,8 +22,10 @@ class _WishlistsScreenState extends State<WishlistsScreen> {
   }
 
   Future<List<Wishlist>> loadCocktailsCsvData() async {
-    final csvDataString = await rootBundle.loadString('assets/csv/daynyong-house-wishlists.csv');
-    List<List<dynamic>> csvList = const CsvToListConverter().convert(csvDataString);
+    final csvDataString =
+        await rootBundle.loadString('assets/csv/daynyong-house-wishlists.csv');
+    List<List<dynamic>> csvList =
+        const CsvToListConverter().convert(csvDataString);
     return csvList.sublist(1).map((row) => Wishlist.fromCsvRow(row)).toList();
   }
 
@@ -31,7 +33,18 @@ class _WishlistsScreenState extends State<WishlistsScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: AppBar(
-        title: const Text('집들이 선물 위시리스트'),
+        title: const Column(children: [
+          Text(
+            '집들이 선물 위시리스트',
+          ),
+          Text(
+            '(사람들이 자꾸 뭐 사갈지 물어봐서 만들었어요)',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ]),
       ),
       body: Column(
         children: [
