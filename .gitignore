@@ -1,0 +1,11 @@
+# General
+.DS_Store
+.idea
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# Flutter specific
+build/
+.pub-cache/
