@@ -15,9 +15,9 @@ class BoardGamesScreen extends StatefulWidget {
 class _BoardGamesScreenState extends State<BoardGamesScreen> {
   late Future<List<BoardGame>> boardGames;
   final TextEditingController _searchNameController = TextEditingController();
+  final TextEditingController _searchPlayerCountController = TextEditingController();
+  final TextEditingController _searchBestForController = TextEditingController();
   String _selectedSearchCategory = '전체';
-  String? _searchPlayerCount;
-  String? _searchBestForCount;
   List<String> categories = ['전체', '전략', '추상전략', '파티', '패밀리', '퍼즐', '테마틱'];
   bool _showSearchOptions = false; // 검색 옵션 표시 상태
 
@@ -41,8 +41,8 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
       bool matchesBestFor = true;
 
       // 사용자가 플레이 인원수를 입력한 경우
-      if (_searchPlayerCount != null && _searchPlayerCount!.isNotEmpty) {
-        int? searchCount = int.tryParse(_searchPlayerCount!);
+      if (_searchPlayerCountController.text.isNotEmpty) {
+        int? searchCount = int.tryParse(_searchPlayerCountController.text!);
         // 입력 값이 유효한 숫자인 경우
         if (searchCount != null) {
           // game.playerCount가 범위를 나타내는 경우 "3~5"
@@ -54,14 +54,14 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
             }
           } else {
             // game.playerCount가 단일 숫자인 경우
-            matchesPlayerCount = game.playerCount == _searchPlayerCount;
+            matchesPlayerCount = game.playerCount == _searchPlayerCountController.text;
           }
         }
       }
 
       // 사용자가 베스트 인원수를 입력한 경우
-      if (_searchBestForCount != null && _searchBestForCount!.isNotEmpty) {
-        int? searchCount = int.tryParse(_searchBestForCount!);
+      if (_searchBestForController.text.isNotEmpty) {
+        int? searchCount = int.tryParse(_searchBestForController.text!);
         // 입력 값이 유효한 숫자인 경우
         if (searchCount != null) {
           // game.playerCount가 범위를 나타내는 경우 "3~5"
@@ -73,7 +73,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
             }
           } else {
             // game.playerCount가 단일 숫자인 경우
-            matchesBestFor = game.bestFor == _searchBestForCount;
+            matchesBestFor = game.bestFor == _searchBestForController.text;
           }
         }
       }
@@ -133,30 +133,28 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
           if (_showSearchOptions) Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _searchPlayerCountController,
               decoration: const InputDecoration(
                 labelText: '플레이 인원으로 검색',
                 suffixIcon: Icon(Icons.people),
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                setState(() {
-                  _searchPlayerCount = value;
-                });
+                setState(() {});
               },
             ),
           ),
           if (_showSearchOptions) Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _searchBestForController,
               decoration: const InputDecoration(
                 labelText: '베스트 인원으로 검색',
                 suffixIcon: Icon(Icons.people),
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                setState(() {
-                  _searchBestForCount = value;
-                });
+                setState(() {});
               },
             ),
           ),
