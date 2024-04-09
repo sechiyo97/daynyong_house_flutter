@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainScreen extends StatefulWidget {
@@ -15,15 +13,15 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _imageIndex = 1;
   late Timer _timer;
+  bool _isMenuVisible = false; // 메뉴 표시 상태
 
   @override
   void initState() {
     super.initState();
-    // 이미지를 5초마다 변경합니다.
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       setState(() {
         _imageIndex++;
-        if (_imageIndex > 7) {
+        if (_imageIndex > 4) {
           _imageIndex = 1;
         }
       });
@@ -32,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
-    _timer.cancel(); // 타이머를 취소하여 메모리 누수를 방지합니다.
+    _timer.cancel();
     super.dispose();
   }
 
@@ -41,13 +39,18 @@ class _MainScreenState extends State<MainScreen> {
     String imageName = 'assets/images/main_screen_image_$_imageIndex.jpeg';
     return Scaffold(
       appBar: AppBar(
-        title: const Text('떼뇽하우스'),
+        title: const Text("Day & Nyong"),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () => setState(() => _isMenuVisible = !_isMenuVisible),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Stack(
-        fit: StackFit.expand,
         children: [
           AnimatedSwitcher(
-            duration: const Duration(seconds: 1), // 페이드인/아웃에 걸리는 시간
+            duration: Duration(seconds: 1), // 페이드인/아웃에 걸리는 시간
             transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(
                 opacity: animation,
@@ -58,35 +61,61 @@ class _MainScreenState extends State<MainScreen> {
               imageName,
               key: ValueKey<int>(_imageIndex),
               fit: BoxFit.cover, // 배경 이미지가 전체 화면을 채우도록 설정합니다.
+              height: double.infinity,
+              width: double.infinity,
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                child: const Text("보드게임 목록"),
-                onPressed: () {
-                  Get.toNamed("/boardgames");
-                },
+          AnimatedOpacity(
+            opacity: _isMenuVisible ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 500),
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
+              height: double.infinity,
+              width: double.infinity,
+              child: Center(
+                child: _isMenuVisible ? _buildMenu() : Container(),
               ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                child: const Text("칵테일 메뉴"),
-                onPressed: () {
-                  Get.toNamed("/cocktails");
-                },
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                child: const Text("집들이 선물 위시리스트"),
-                onPressed: () {
-                  Get.toNamed("/wishlists");
-                },
-              ),
-            ],
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMenu() {
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildMenuButton("보드게임 목록", "/boardgames"),
+            const SizedBox(height: 10),
+            _buildMenuButton("칵테일 메뉴", "/cocktails"),
+            const SizedBox(height: 10),
+            _buildMenuButton("위시리스트", "/wishlists"),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuButton(String title, String route) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.white.withOpacity(0),
+        textStyle: TextStyle(fontSize: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+      onPressed: () {
+        Get.toNamed(route);
+      },
+      child: Text(title),
     );
   }
 }
