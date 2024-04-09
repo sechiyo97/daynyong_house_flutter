@@ -17,6 +17,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   final TextEditingController _searchNameController = TextEditingController();
   String _selectedSearchCategory = '전체';
   String? _searchPlayerCount;
+  String? _searchBestForCount;
   List<String> categories = ['전체', '전략', '추상전략', '파티', '패밀리', '퍼즐', '테마틱'];
   bool _showSearchOptions = false; // 검색 옵션 표시 상태
 
@@ -36,9 +37,48 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
     return data.where((game) {
       bool matchesName = _searchNameController.text.isEmpty || game.name.toLowerCase().contains(_searchNameController.text.toLowerCase());
       bool matchesCategory = _selectedSearchCategory == '전체' || game.category == _selectedSearchCategory;
-      bool matchesPlayerCount = _searchPlayerCount == null || game.playerCount.contains(_searchPlayerCount!);
+      bool matchesPlayerCount = true;
+      bool matchesBestFor = true;
 
-      return matchesName && matchesCategory && matchesPlayerCount;
+      // 사용자가 플레이 인원수를 입력한 경우
+      if (_searchPlayerCount != null && _searchPlayerCount!.isNotEmpty) {
+        int? searchCount = int.tryParse(_searchPlayerCount!);
+        // 입력 값이 유효한 숫자인 경우
+        if (searchCount != null) {
+          // game.playerCount가 범위를 나타내는 경우 "3~5"
+          if (game.playerCount.contains('~')) {
+            var parts = game.playerCount.split('~').map(int.tryParse).toList();
+            // 범위의 시작과 끝을 확인
+            if (parts[0] != null && parts[1] != null) {
+              matchesPlayerCount = searchCount >= parts[0]! && searchCount <= parts[1]!;
+            }
+          } else {
+            // game.playerCount가 단일 숫자인 경우
+            matchesPlayerCount = game.playerCount == _searchPlayerCount;
+          }
+        }
+      }
+
+      // 사용자가 베스트 인원수를 입력한 경우
+      if (_searchBestForCount != null && _searchBestForCount!.isNotEmpty) {
+        int? searchCount = int.tryParse(_searchBestForCount!);
+        // 입력 값이 유효한 숫자인 경우
+        if (searchCount != null) {
+          // game.playerCount가 범위를 나타내는 경우 "3~5"
+          if (game.bestFor.contains('~')) {
+            var parts = game.bestFor.split('~').map(int.tryParse).toList();
+            // 범위의 시작과 끝을 확인
+            if (parts[0] != null && parts[1] != null) {
+              matchesBestFor = searchCount >= parts[0]! && searchCount <= parts[1]!;
+            }
+          } else {
+            // game.playerCount가 단일 숫자인 경우
+            matchesBestFor = game.bestFor == _searchBestForCount;
+          }
+        }
+      }
+
+      return matchesName && matchesCategory && matchesPlayerCount && matchesBestFor;
     }).toList();
   }
 
@@ -61,17 +101,6 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
       body: Column(
         children: [
           if (_showSearchOptions) Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchNameController,
-              decoration: const InputDecoration(
-                labelText: '이름으로 검색',
-                suffixIcon: Icon(Icons.search),
-              ),
-              onChanged: (value) => setState(() {}),
-            ),
-          ),
-          if (_showSearchOptions) Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: DropdownButton<String>(
               value: _selectedSearchCategory,
@@ -93,6 +122,17 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
           if (_showSearchOptions) Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _searchNameController,
+              decoration: const InputDecoration(
+                labelText: '이름으로 검색',
+                suffixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) => setState(() {}),
+            ),
+          ),
+          if (_showSearchOptions) Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
               decoration: const InputDecoration(
                 labelText: '플레이 인원으로 검색',
                 suffixIcon: Icon(Icons.people),
@@ -101,6 +141,21 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
               onChanged: (value) {
                 setState(() {
                   _searchPlayerCount = value;
+                });
+              },
+            ),
+          ),
+          if (_showSearchOptions) Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: const InputDecoration(
+                labelText: '베스트 인원으로 검색',
+                suffixIcon: Icon(Icons.people),
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                setState(() {
+                  _searchBestForCount = value;
                 });
               },
             ),
