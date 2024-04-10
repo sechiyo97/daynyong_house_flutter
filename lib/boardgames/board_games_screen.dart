@@ -88,7 +88,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
       backgroundColor: Colors.black.withOpacity(0.05),
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.0),
-        title: const Text('Board Games'),
+        title: const Text('보드게임 목록'),
         actions: [
           IconButton(
             icon: Icon(_showSearchOptions ? Icons.search_off : Icons.search),
