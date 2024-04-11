@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
           primary: Colors.black,
         ),
       ),
+      title: "떼뇽하우스",
       getPages: [
         GetPage(
           name: '/main',
