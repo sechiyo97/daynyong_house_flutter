@@ -8,8 +8,9 @@ class CocktailTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? recipeString = cocktail.recipeDisplayString();
     return Card(
-      elevation: 2,
+      elevation: 0,
       margin: const EdgeInsets.all(8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -32,7 +33,9 @@ class CocktailTile extends StatelessWidget {
                 // ),
               ],
             ),
-            const SizedBox(height: 10),
+            if (recipeString != null) Text(
+              recipeString,
+            ),
             Text(
               cocktail.description,
             )
