@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:daynyong_house_flutter/boardgames/component/link_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../model/wishlist.dart';
 
@@ -12,6 +13,7 @@ class WishlistTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool hasLink = wishlist.link?.isBlank == false;
     return Card(
       elevation: 2,
       margin: const EdgeInsets.all(8.0),
@@ -29,8 +31,8 @@ class WishlistTile extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                if (wishlist.link != null) const SizedBox(width: 10),
-                if (wishlist.link != null)
+                if (hasLink) const SizedBox(width: 10),
+                if (hasLink)
                   LinkIcon(
                     url: wishlist.link!,
                   )
