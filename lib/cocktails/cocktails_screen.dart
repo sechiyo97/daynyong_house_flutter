@@ -26,16 +26,27 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
   }
 
   Future<List<Cocktail>> loadCocktailsCsvData() async {
-    final csvDataString = await rootBundle.loadString('assets/csv/daynyong-house-cocktails.csv');
-    List<List<dynamic>> csvList = const CsvToListConverter().convert(csvDataString);
+    final csvDataString =
+        await rootBundle.loadString('assets/csv/daynyong-house-cocktails.csv');
+    List<List<dynamic>> csvList =
+        const CsvToListConverter().convert(csvDataString);
     return csvList.sublist(1).map((row) => Cocktail.fromCsvRow(row)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      backgroundColor: Colors.black.withOpacity(0.9),
       appBar: AppBar(
-        title: const Text('칵테일 목록'),
+        backgroundColor: Colors.black.withOpacity(0.9),
+        title: const Text(
+          '칵테일 목록',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: FutureBuilder<List<Cocktail>>(
         future: cocktails,
@@ -44,6 +55,7 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
             var data = snapshot.data!;
             // 여기에서 베이스를 기준으로 그룹화하여 UI를 구성합니다.
             return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 40),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 return CocktailTile(cocktail: data[index]);

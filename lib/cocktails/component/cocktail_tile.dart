@@ -7,7 +7,7 @@ class CocktailTile extends StatefulWidget {
   const CocktailTile({Key? key, required this.cocktail}) : super(key: key);
 
   @override
-  _CocktailTileState createState() => _CocktailTileState();
+  State<StatefulWidget> createState() => _CocktailTileState();
 }
 
 class _CocktailTileState extends State<CocktailTile> {
@@ -15,41 +15,42 @@ class _CocktailTileState extends State<CocktailTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
+    return Container(
       margin: const EdgeInsets.all(8.0),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, // 이름과 토글 버튼을 양 끝으로 정렬합니다.
-              children: [
-                Text(
-                  widget.cocktail.name,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+            GestureDetector(
+              child: Text(
+                widget.cocktail.name,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.amber,
+                  fontWeight: FontWeight.bold,
                 ),
-                IconButton( // 레시피 표시 토글 버튼
-                  icon: Icon(_isRecipeVisible ? Icons.visibility_off : Icons.visibility),
-                  onPressed: () {
-                    setState(() {
-                      _isRecipeVisible = !_isRecipeVisible; // 레시피 표시 상태를 토글합니다.
-                    });
-                  },
-                ),
-              ],
+              ),
+              onTap: () {
+                setState(() {
+                  _isRecipeVisible = !_isRecipeVisible; // 레시피 표시 상태를 토글합니다.
+                });
+              },
             ),
-            Text(widget.cocktail.description), // 항상 보이는 설명 텍스트
+            const SizedBox(
+              height: 6,
+            ),
+            Text(widget.cocktail.description, style: const TextStyle(
+              color: Colors.white,
+            ),),
             if (_isRecipeVisible) // 레시피 표시 여부에 따라 조건부 렌더링
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 6.0),
                 child: Text(
                   widget.cocktail.recipeDisplayString() ?? '',
-                  style: TextStyle(color: Colors.grey[600]),
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
           ],
