@@ -1,9 +1,9 @@
-import 'package:csv/csv.dart';
-import 'package:daynyong_house_flutter/cocktails/component/cocktail_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../component/custom_scaffold.dart';
+import 'component/cocktail_tile.dart';
 import 'model/cocktail.dart';
+import 'package:csv/csv.dart';
 
 class CocktailsScreen extends StatefulWidget {
   const CocktailsScreen({Key? key}) : super(key: key);
@@ -18,7 +18,11 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
   @override
   void initState() {
     super.initState();
-    cocktails = loadCocktailsCsvData();
+    cocktails = loadCocktailsCsvData().then((list) {
+      // 알파벳 순으로 정렬
+      list.sort((a, b) => a.base.compareTo(b.base));
+      return list;
+    });
   }
 
   Future<List<Cocktail>> loadCocktailsCsvData() async {
@@ -33,29 +37,36 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
       appBar: AppBar(
         title: const Text('칵테일 목록'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: FutureBuilder<List<Cocktail>>(
-              future: cocktails,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var data = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      Cocktail cocktail = data[index];
-                      return CocktailTile(cocktail: cocktail);
-                    },
+      body: FutureBuilder<List<Cocktail>>(
+        future: cocktails,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var data = snapshot.data!;
+            // 여기에서 베이스를 기준으로 그룹화하여 UI를 구성합니다.
+            return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                // 이전 아이템과 현재 아이템의 베이스가 다르면 헤더를 보여줍니다.
+                if (index == 0 || data[index].base != data[index - 1].base) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(data[index].base, style: Theme.of(context).textTheme.headline6),
+                      ),
+                      CocktailTile(cocktail: data[index]),
+                    ],
                   );
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
                 }
-                return const Center(child: CircularProgressIndicator());
+                return CocktailTile(cocktail: data[index]);
               },
-            ),
-          ),
-        ],
+            );
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }

@@ -25,11 +25,11 @@ class CocktailTile extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 10),
-                Chip(
-                  label: Text('베이스: ${cocktail.base}'),
-                  avatar: Icon(Icons.local_drink, size: 20),
-                ),
+                // SizedBox(width: 10),
+                // Chip(
+                //   label: Text('베이스: ${cocktail.base}'),
+                //   avatar: Icon(Icons.local_drink, size: 20),
+                // ),
               ],
             ),
             const SizedBox(height: 10),
