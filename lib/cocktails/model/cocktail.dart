@@ -1,12 +1,10 @@
 class Cocktail {
   final String name;
-  final String base;
   final String description;
   final Map<String, String>? recipe;
 
   Cocktail({
     required this.name,
-    required this.base,
     required this.description,
     required this.recipe,
   });
@@ -17,7 +15,7 @@ class Cocktail {
   }
 
   factory Cocktail.fromCsvRow(List<dynamic> row) {
-    String? recipeRawString = (row.length >= 4) ? row[3].toString() : null;
+    String? recipeRawString = (row.length >= 3) ? row[2].toString() : null;
     Map<String, String>? recipe;
 
     if (recipeRawString != null) {
@@ -32,8 +30,7 @@ class Cocktail {
 
     return Cocktail(
       name: row[0].toString(),
-      base: row[1].toString(),
-      description: row[2].toString(),
+      description: row[1].toString(),
       recipe: recipe,
     );
   }

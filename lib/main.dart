@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       home: const MainScreen(),
       theme: ThemeData(
+        fontFamily: 'Noto Sans',
         colorScheme: const ColorScheme.light(
           primary: Colors.black,
         ),

@@ -20,7 +20,7 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
     super.initState();
     cocktails = loadCocktailsCsvData().then((list) {
       // 알파벳 순으로 정렬
-      list.sort((a, b) => a.base.compareTo(b.base));
+      // list.sort((a, b) => a.base.compareTo(b.base));
       return list;
     });
   }
@@ -46,19 +46,6 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
             return ListView.builder(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                // 이전 아이템과 현재 아이템의 베이스가 다르면 헤더를 보여줍니다.
-                if (index == 0 || data[index].base != data[index - 1].base) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(data[index].base, style: Theme.of(context).textTheme.headline6),
-                      ),
-                      CocktailTile(cocktail: data[index]),
-                    ],
-                  );
-                }
                 return CocktailTile(cocktail: data[index]);
               },
             );
