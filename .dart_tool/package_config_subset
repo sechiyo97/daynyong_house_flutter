@@ -38,6 +38,10 @@ get
 2.15
 file:///Users/day/.pub-cache/hosted/pub.dev/get-4.6.6/
 file:///Users/day/.pub-cache/hosted/pub.dev/get-4.6.6/lib/
+intl
+3.0
+file:///Users/day/.pub-cache/hosted/pub.dev/intl-0.19.0/
+file:///Users/day/.pub-cache/hosted/pub.dev/intl-0.19.0/lib/
 leak_tracker
 3.1
 file:///Users/day/.pub-cache/hosted/pub.dev/leak_tracker-10.0.0/
@@ -74,6 +78,10 @@ plugin_platform_interface
 3.0
 file:///Users/day/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.8/
 file:///Users/day/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.8/lib/
+simple_gesture_detector
+2.12
+file:///Users/day/.pub-cache/hosted/pub.dev/simple_gesture_detector-0.2.1/
+file:///Users/day/.pub-cache/hosted/pub.dev/simple_gesture_detector-0.2.1/lib/
 source_span
 2.18
 file:///Users/day/.pub-cache/hosted/pub.dev/source_span-1.10.0/
@@ -90,6 +98,10 @@ string_scanner
 2.18
 file:///Users/day/.pub-cache/hosted/pub.dev/string_scanner-1.2.0/
 file:///Users/day/.pub-cache/hosted/pub.dev/string_scanner-1.2.0/lib/
+table_calendar
+3.0
+file:///Users/day/.pub-cache/hosted/pub.dev/table_calendar-3.1.1/
+file:///Users/day/.pub-cache/hosted/pub.dev/table_calendar-3.1.1/lib/
 term_glyph
 2.12
 file:///Users/day/.pub-cache/hosted/pub.dev/term_glyph-1.2.1/
