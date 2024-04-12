@@ -22,7 +22,6 @@ class BoardGameTile extends StatelessWidget {
               game.name,
               style: const TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 10),

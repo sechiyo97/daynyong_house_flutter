@@ -46,7 +46,6 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
           style: TextStyle(
             fontSize: 20,
             color: Colors.white,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),
