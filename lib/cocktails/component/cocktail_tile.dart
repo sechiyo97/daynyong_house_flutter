@@ -28,6 +28,7 @@ class _CocktailTileState extends State<CocktailTile> {
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.amber,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               onTap: () {

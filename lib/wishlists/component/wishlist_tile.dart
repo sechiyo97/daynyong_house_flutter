@@ -28,6 +28,7 @@ class WishlistTile extends StatelessWidget {
                   wishlist.name,
                   style: const TextStyle(
                     fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 if (hasLink) const SizedBox(width: 10),

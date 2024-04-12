@@ -42,6 +42,7 @@ class _WishlistsScreenState extends State<WishlistsScreen> {
             '(사람들이 자꾸 뭐 사갈지 물어봐서 만들었어요)',
             style: TextStyle(
               fontSize: 12,
+              fontWeight: FontWeight.bold,
             ),
           )
         ]),
