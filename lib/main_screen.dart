@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       setState(() {
         _imageIndex++;
-        if (_imageIndex > 4) {
+        if (_imageIndex > 6) {
           _imageIndex = 1;
         }
       });
