@@ -98,6 +98,8 @@ class _MainScreenState extends State<MainScreen> {
             const SizedBox(height: 20),
             _buildMenuButton("위시리스트", "/wishlists"),
             const SizedBox(height: 20),
+            _buildMenuButton("배달 맛집", "/restaurants"),
+            const SizedBox(height: 20),
             _buildMenuButton("방문 가능 일자", "/schedule"),
           ],
         ),

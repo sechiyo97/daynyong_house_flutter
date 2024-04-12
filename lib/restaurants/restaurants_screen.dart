@@ -1,57 +1,54 @@
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
+import 'package:daynyong_house_flutter/restaurants/component/restaurant_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../component/custom_scaffold.dart';
-import 'component/cocktail_tile.dart';
-import 'model/cocktail.dart';
 import 'package:csv/csv.dart';
 
-class CocktailsScreen extends StatefulWidget {
-  const CocktailsScreen({Key? key}) : super(key: key);
+import 'model/restaurant.dart';
+
+class RestaurantsScreen extends StatefulWidget {
+  const RestaurantsScreen({Key? key}) : super(key: key);
 
   @override
-  State<CocktailsScreen> createState() => _CocktailsScreenState();
+  State<RestaurantsScreen> createState() => _RestaurantsScreenState();
 }
 
-class _CocktailsScreenState extends State<CocktailsScreen> {
-  late Future<List<Cocktail>> cocktails;
+class _RestaurantsScreenState extends State<RestaurantsScreen> {
+  late Future<List<Restaurant>> restaurants;
 
   @override
   void initState() {
     super.initState();
-    cocktails = loadCocktailsCsvData().then((list) {
+    restaurants = loadRestaurantsCsvData().then((list) {
       // 알파벳 순으로 정렬
       // list.sort((a, b) => a.base.compareTo(b.base));
       return list;
     });
   }
 
-  Future<List<Cocktail>> loadCocktailsCsvData() async {
+  Future<List<Restaurant>> loadRestaurantsCsvData() async {
     final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house-cocktails.csv');
+        await rootBundle.loadString('assets/csv/daynyong-house-restaurants.csv');
     List<List<dynamic>> csvList =
         const CsvToListConverter().convert(csvDataString);
-    return csvList.sublist(1).map((row) => Cocktail.fromCsvRow(row)).toList();
+    return csvList.sublist(1).map((row) => Restaurant.fromCsvRow(row)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      backgroundColor: Colors.black.withOpacity(0.9),
-      appBar: CustomAppBar(
-        iconColor: Colors.white,
-        backgroundColor: Colors.black.withOpacity(0.3),
-        title: const Text(
-          '칵테일 목록',
+      appBar: const CustomAppBar(
+        title: Text(
+          '배달 맛집',
           style: TextStyle(
             fontSize: 20,
-            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      body: FutureBuilder<List<Cocktail>>(
-        future: cocktails,
+      body: FutureBuilder<List<Restaurant>>(
+        future: restaurants,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var data = snapshot.data!;
@@ -59,7 +56,7 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
               padding: const EdgeInsets.only(bottom: 40),
               itemCount: data.length,
               itemBuilder: (context, index) {
-                return CocktailTile(cocktail: data[index]);
+                return RestaurantTile(restaurant: data[index]);
               },
             );
           } else if (snapshot.hasError) {
