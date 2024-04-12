@@ -1,3 +1,4 @@
+import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
@@ -86,7 +87,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       backgroundColor: Colors.black.withOpacity(0.05),
-      appBar: AppBar(
+      appBar: CustomAppBar(
         backgroundColor: Colors.black.withOpacity(0.0),
         title: const Text('보드게임 목록'),
         actions: [

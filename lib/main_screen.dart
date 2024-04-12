@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:daynyong_house_flutter/component/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,19 +41,18 @@ class _MainScreenState extends State<MainScreen> {
     String imageName = 'assets/images/main_screen_image_$_imageIndex.jpeg';
     return CustomScaffold(
       backgroundColor: Colors.black.withOpacity(0.05),
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: const Text("Day & Nyong & Q"),
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () => setState(() => _isMenuVisible = !_isMenuVisible),
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: Stack(
         children: [
           AnimatedSwitcher(
-            duration: Duration(seconds: 1), // 페이드인/아웃에 걸리는 시간
+            duration: const Duration(seconds: 1), // 페이드인/아웃에 걸리는 시간
             transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(
                 opacity: animation,

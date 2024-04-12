@@ -1,3 +1,4 @@
+import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../component/custom_scaffold.dart';
@@ -37,8 +38,9 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       backgroundColor: Colors.black.withOpacity(0.9),
-      appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.9),
+      appBar: CustomAppBar(
+        iconColor: Colors.white,
+        backgroundColor: Colors.black.withOpacity(0.3),
         title: const Text(
           '칵테일 목록',
           style: TextStyle(

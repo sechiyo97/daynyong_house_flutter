@@ -40,16 +40,16 @@ class _CocktailTileState extends State<CocktailTile> {
             const SizedBox(
               height: 6,
             ),
-            Text(widget.cocktail.description, style: const TextStyle(
-              color: Colors.white,
+            Text(widget.cocktail.description, style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
             ),),
             if (_isRecipeVisible) // 레시피 표시 여부에 따라 조건부 렌더링
               Padding(
                 padding: const EdgeInsets.only(top: 6.0),
                 child: Text(
                   widget.cocktail.recipeDisplayString() ?? '',
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.5),
                   ),
                 ),
               ),

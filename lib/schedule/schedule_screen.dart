@@ -1,3 +1,4 @@
+import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:csv/csv.dart';
@@ -58,8 +59,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('스케줄'),
+      appBar: const CustomAppBar(
+        title: Text('스케줄'),
       ),
       body: Column(
         children: [

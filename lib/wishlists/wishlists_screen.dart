@@ -1,4 +1,5 @@
 import 'package:csv/csv.dart';
+import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:daynyong_house_flutter/wishlists/component/wishlist_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,8 +33,8 @@ class _WishlistsScreenState extends State<WishlistsScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      appBar: AppBar(
-        title: const Column(children: [
+      appBar: const CustomAppBar(
+        title: Column(children: [
           Text(
             '집들이 선물 위시리스트',
           ),
