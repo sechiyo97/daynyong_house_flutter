@@ -60,7 +60,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: Text('스케줄'),
+        title: Text('방문 가능 일자'),
       ),
       body: Column(
         children: [
