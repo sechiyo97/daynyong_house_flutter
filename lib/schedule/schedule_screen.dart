@@ -1,5 +1,7 @@
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
+import 'package:daynyong_house_flutter/schedule/model/schedule.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -13,9 +15,10 @@ class ScheduleScreen extends StatefulWidget {
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
   final CalendarFormat _calendarFormat = CalendarFormat.month;
+  Schedule? _scheduleOfCurrentSelectedDay;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  Map<DateTime, List<String>> _events = {};
+  List<Schedule> _schedules = [];
 
   @override
   void initState() {
@@ -26,34 +29,34 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   // CSV 데이터로부터 이벤트 로드
   void _loadEvents() async {
     final rawData =
-        await rootBundle.loadString('assets/csv/daynyong-house-schedule.csv');
+    await rootBundle.loadString('assets/csv/daynyong-house-schedule.csv');
     List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
-    Map<DateTime, List<String>> loadedEvents = {};
+    List<Schedule> schedules = [];
     for (var row in listData) {
-      final dateParts = row[0].split('/');
       try {
-        final date = DateTime.utc(int.parse(dateParts[0]),
-            int.parse(dateParts[1]), int.parse(dateParts[2]));
-        loadedEvents[date] = [];
-        final reservation = row[1]?.toString();
-        if (reservation?.isNotEmpty == true)
-          loadedEvents[date]?.add(reservation!);
+        Schedule schedule = Schedule.fromCsvRow(row);
+        schedules.add(schedule);
       } catch (e) {
         // do nothing
       }
     }
 
     setState(() {
-      _events = loadedEvents;
+      _schedules = schedules;
     });
   }
 
-  // 선택한 날짜의 이벤트를 가져오는 함수
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    Schedule? scheduleOfDay = findScheduleOfDay(selectedDay);
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
+      _scheduleOfCurrentSelectedDay = scheduleOfDay;
     });
+  }
+
+  Schedule? findScheduleOfDay(DateTime day) {
+    return _schedules.firstWhereOrNull((element) => element.date == day);
   }
 
   @override
@@ -109,14 +112,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               //   );
               // },
               defaultBuilder: (context, day, focusedDay) {
-                if (_events.containsKey(day)) {
+                Schedule? scheduleOfDay = findScheduleOfDay(day);
+                if (scheduleOfDay != null) {
                   return Container(
                     margin: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _events[day]!.isEmpty ? Colors.green : Colors.grey,
+                      color: scheduleOfDay.isReserved ? Colors.grey : Colors
+                          .green,
                     ),
-                    child: Center(child: Text(day.day.toString(), style: TextStyle(color: Colors.white),)),
+                    child: Center(child: Text(
+                      day.day.toString(), style: TextStyle(color: Colors
+                        .white),)),
                   );
                 }
                 // 토요일에 파란색, 일요일에 빨간색 스타일 적용
@@ -166,8 +173,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               formatButtonTextStyle: const TextStyle(color: Colors.white),
-              leftChevronIcon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-              rightChevronIcon: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+              leftChevronIcon: const Icon(
+                  Icons.arrow_back_ios, color: Colors.black),
+              rightChevronIcon: const Icon(
+                  Icons.arrow_forward_ios, color: Colors.black),
               titleTextStyle: const TextStyle(color: Colors.black),
             ),
           ),
@@ -182,7 +191,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Widget _buildReservationInfoWidget() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(children:[Row(
+      child: Column(children: [Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 예약 가능한 날짜를 나타내는 정보
@@ -219,8 +228,16 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           ),
         ],
       ),
-
-        const Text('* 예약은 카카오톡 문의 주세요'),],),
+        const Text('* 예약은 카카오톡 문의 주세요'),
+        const SizedBox(height: 10),
+        Text(getDateString(_selectedDay)),
+        if (_scheduleOfCurrentSelectedDay?.info != null) Text("* ${_scheduleOfCurrentSelectedDay?.info ?? ""}"),
+      ],),
     );
+  }
+
+  String getDateString(DateTime? day) {
+    if (day == null) return "";
+    return "${day.year}년 ${day.month}월 ${day.day}일";
   }
 }
