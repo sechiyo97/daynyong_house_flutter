@@ -16,11 +16,13 @@ class BoardGamesScreen extends StatefulWidget {
 class _BoardGamesScreenState extends State<BoardGamesScreen> {
   late Future<List<BoardGame>> boardGames;
   final TextEditingController _searchNameController = TextEditingController();
-  final TextEditingController _searchPlayerCountController =
-      TextEditingController();
-  final TextEditingController _searchBestForController =
-      TextEditingController();
-  String _selectedSearchCategory = '전체';
+
+  List<String> playerCounts = ['전체', '1','2','3','4','5','6','7','8'];
+  String _selectedPlayerCount = '전체';
+
+  List<String> bestForCounts = ['전체', '1','2','3','4','5','6','7','8'];
+  String _selectedBestForCount = '전체';
+
   List<String> categories = [
     '전체',
     '전략',
@@ -31,11 +33,13 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
     '테마틱',
     '어린이'
   ];
-  bool _showSearchOptions = false; // 검색 옵션 표시 상태
+  String _selectedSearchCategory = '전체';
+
   List<String> geekWeightCategories = ['전체', '1점대', '2점대', '3점대', '4점대'];
   String _selectedGeekWeight = '전체'; // Default to show all
 
   final ScrollController _scrollController = ScrollController();
+  bool _showSearchOptions = false; // 검색 옵션 표시 상태
 
   @override
   void initState() {
@@ -85,8 +89,8 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
       bool matchesBestFor = true;
 
       // 사용자가 플레이 인원수를 입력한 경우
-      if (_searchPlayerCountController.text.isNotEmpty) {
-        int? searchCount = int.tryParse(_searchPlayerCountController.text!);
+      if (_selectedPlayerCount != '전체') {
+        int? searchCount = int.tryParse(_selectedPlayerCount);
         // 입력 값이 유효한 숫자인 경우
         if (searchCount != null) {
           // game.playerCount가 범위를 나타내는 경우 "3~5"
@@ -100,14 +104,14 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
           } else {
             // game.playerCount가 단일 숫자인 경우
             matchesPlayerCount =
-                game.playerCount == _searchPlayerCountController.text;
+                game.playerCount == _selectedPlayerCount;
           }
         }
       }
 
       // 사용자가 베스트 인원수를 입력한 경우
-      if (_searchBestForController.text.isNotEmpty) {
-        int? searchCount = int.tryParse(_searchBestForController.text!);
+      if (_selectedBestForCount != '전체') {
+        int? searchCount = int.tryParse(_selectedBestForCount);
         // 입력 값이 유효한 숫자인 경우
         if (searchCount != null) {
           // game.playerCount가 범위를 나타내는 경우 "3~5"
@@ -120,7 +124,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
             }
           } else {
             // game.playerCount가 단일 숫자인 경우
-            matchesBestFor = game.bestFor == _searchBestForController.text;
+            matchesBestFor = game.bestFor == _selectedBestForCount;
           }
         }
       }
@@ -220,31 +224,53 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
           if (_showSearchOptions)
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchPlayerCountController,
-                decoration: const InputDecoration(
-                  labelText: '플레이 인원으로 검색',
-                  suffixIcon: Icon(Icons.people),
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  setState(() {});
-                },
+              child: Row(
+                children: [
+                  const Text("플레이 인원: "),
+                  DropdownButton<String>(
+                    value: _selectedPlayerCount,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          _selectedPlayerCount = value;
+                        });
+                      }
+                    },
+                    items: playerCounts
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             ),
           if (_showSearchOptions)
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchBestForController,
-                decoration: const InputDecoration(
-                  labelText: '베스트 인원으로 검색',
-                  suffixIcon: Icon(Icons.people),
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  setState(() {});
-                },
+              child: Row(
+                children: [
+                  const Text("베스트 인원: "),
+                  DropdownButton<String>(
+                    value: _selectedBestForCount,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          _selectedBestForCount = value;
+                        });
+                      }
+                    },
+                    items: bestForCounts
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             ),
           Expanded(
