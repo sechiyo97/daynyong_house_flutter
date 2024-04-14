@@ -1,4 +1,5 @@
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
+import 'package:daynyong_house_flutter/component/rounded_container.dart';
 import 'package:daynyong_house_flutter/schedule/model/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   // CSV 데이터로부터 이벤트 로드
   void _loadEvents() async {
     final rawData =
-    await rootBundle.loadString('assets/csv/daynyong-house - schedule.csv');
+        await rootBundle.loadString('assets/csv/daynyong-house - schedule.csv');
     List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
     List<Schedule> schedules = [];
     for (var row in listData) {
@@ -118,12 +119,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     margin: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: scheduleOfDay.isReserved ? Colors.grey : Colors
-                          .green,
+                      color:
+                          scheduleOfDay.isReserved ? Colors.grey : Colors.green,
                     ),
-                    child: Center(child: Text(
-                      day.day.toString(), style: TextStyle(color: Colors
-                        .white),)),
+                    child: Center(
+                        child: Text(
+                      day.day.toString(),
+                      style: TextStyle(color: Colors.white),
+                    )),
                   );
                 }
                 // 토요일에 파란색, 일요일에 빨간색 스타일 적용
@@ -173,10 +176,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               formatButtonTextStyle: const TextStyle(color: Colors.white),
-              leftChevronIcon: const Icon(
-                  Icons.arrow_back_ios, color: Colors.black),
-              rightChevronIcon: const Icon(
-                  Icons.arrow_forward_ios, color: Colors.black),
+              leftChevronIcon:
+                  const Icon(Icons.arrow_back_ios, color: Colors.black),
+              rightChevronIcon:
+                  const Icon(Icons.arrow_forward_ios, color: Colors.black),
               titleTextStyle: const TextStyle(color: Colors.black),
             ),
           ),
@@ -191,53 +194,73 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Widget _buildReservationInfoWidget() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(children: [Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          // 예약 가능한 날짜를 나타내는 정보
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green,
-                ),
+              // 예약 가능한 날짜를 나타내는 정보
+              Row(
+                children: [
+                  Container(
+                    width: 12,
+                    height: 12,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text('예약 가능'),
+                ],
               ),
-              const SizedBox(width: 8),
-              const Text('예약 가능'),
+              const SizedBox(width: 20), // 요소 간 간격
+              // 예약이 이미 있는 날짜를 나타내는 정보
+              Row(
+                children: [
+                  Container(
+                    width: 12,
+                    height: 12,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text('예약됨'),
+                  const SizedBox(width: 8),
+                ],
+              ),
             ],
           ),
-          const SizedBox(width: 20), // 요소 간 간격
-          // 예약이 이미 있는 날짜를 나타내는 정보
-          Row(
-            children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(width: 8),
-              const Text('예약됨'),
-              const SizedBox(width: 8),
-            ],
-          ),
+          const Text('* 예약은 카카오톡 문의 주세요'),
+          const SizedBox(height: 20),
+          _selectedDayInfo(),
         ],
       ),
-        const Text('* 예약은 카카오톡 문의 주세요'),
-        const SizedBox(height: 10),
-        Text(getDateString(_selectedDay)),
-        if (_scheduleOfCurrentSelectedDay?.info != null) Text("* ${_scheduleOfCurrentSelectedDay?.info ?? ""}"),
-      ],),
+    );
+  }
+
+  Widget _selectedDayInfo() {
+    bool hasExtraInfo = _scheduleOfCurrentSelectedDay?.info.isBlank == false;
+    return RoundedContainer(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      backgroundColor: Colors.orangeAccent.withOpacity(0.1),
+      child: Column(
+        children: [
+          Text(
+            "선택된 날짜: ${getDateString(_selectedDay)}",
+          ),
+          const SizedBox(height: 10),
+          Text("특이사항: ${hasExtraInfo ? _scheduleOfCurrentSelectedDay?.info : "없음"}"),
+        ],
+      ),
     );
   }
 
   String getDateString(DateTime? day) {
-    if (day == null) return "";
+    if (day == null) return "없음";
     return "${day.year}년 ${day.month}월 ${day.day}일";
   }
 }
