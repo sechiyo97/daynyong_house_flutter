@@ -35,10 +35,25 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   List<String> geekWeightCategories = ['전체', '1점대', '2점대', '3점대', '4점대'];
   String _selectedGeekWeight = '전체'; // Default to show all
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     boardGames = loadBoardGameCsvData();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+  }
+
+  void _scrollListener() {
+    setState(() {
+      _showSearchOptions = false;
+    });
   }
 
   Future<List<BoardGame>> loadBoardGameCsvData() async {
@@ -239,6 +254,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
                 if (snapshot.hasData) {
                   var filteredData = filterData(snapshot.data!);
                   return ListView.builder(
+                    controller: _scrollController,
                     itemCount: filteredData.length,
                     itemBuilder: (context, index) {
                       BoardGame game = filteredData[index];
