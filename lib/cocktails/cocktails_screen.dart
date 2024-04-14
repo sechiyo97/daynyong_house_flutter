@@ -28,7 +28,7 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
 
   Future<List<Cocktail>> loadCocktailsCsvData() async {
     final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house-cocktails.csv');
+        await rootBundle.loadString('assets/csv/daynyong-house - cocktails.csv');
     List<List<dynamic>> csvList =
         const CsvToListConverter().convert(csvDataString);
     return csvList.sublist(1).map((row) => Cocktail.fromCsvRow(row)).toList();

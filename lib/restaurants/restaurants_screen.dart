@@ -29,7 +29,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
   Future<List<Restaurant>> loadRestaurantsCsvData() async {
     final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house-restaurants.csv');
+        await rootBundle.loadString('assets/csv/daynyong-house - restaurants.csv');
     List<List<dynamic>> csvList =
         const CsvToListConverter().convert(csvDataString);
     return csvList.sublist(1).map((row) => Restaurant.fromCsvRow(row)).toList();

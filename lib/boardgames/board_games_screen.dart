@@ -43,7 +43,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
 
   Future<List<BoardGame>> loadBoardGameCsvData() async {
     final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house-boardgames.csv');
+        await rootBundle.loadString('assets/csv/daynyong-house - boardgames.csv');
     List<List<dynamic>> csvList =
         const CsvToListConverter().convert(csvDataString);
     return csvList.sublist(1).map((row) => BoardGame.fromCsvRow(row)).toList();

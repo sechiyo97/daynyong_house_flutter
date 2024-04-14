@@ -29,7 +29,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   // CSV 데이터로부터 이벤트 로드
   void _loadEvents() async {
     final rawData =
-    await rootBundle.loadString('assets/csv/daynyong-house-schedule.csv');
+    await rootBundle.loadString('assets/csv/daynyong-house - schedule.csv');
     List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
     List<Schedule> schedules = [];
     for (var row in listData) {

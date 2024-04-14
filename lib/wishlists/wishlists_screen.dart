@@ -24,7 +24,7 @@ class _WishlistsScreenState extends State<WishlistsScreen> {
 
   Future<List<Wishlist>> loadCocktailsCsvData() async {
     final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house-wishlists.csv');
+        await rootBundle.loadString('assets/csv/daynyong-house - wishlists.csv');
     List<List<dynamic>> csvList =
         const CsvToListConverter().convert(csvDataString);
     return csvList.sublist(1).map((row) => Wishlist.fromCsvRow(row)).toList();
