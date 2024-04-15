@@ -139,10 +139,11 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      backgroundColor: Colors.black.withOpacity(0.05),
+      // backgroundColor: Colors.deepOrangeAccent.withOpacity(0.1),
       appBar: CustomAppBar(
-        backgroundColor: Colors.black.withOpacity(0.0),
-        title: const Text('보드게임 목록'),
+        iconColor: Colors.white,
+        backgroundColor: Colors.deepOrangeAccent,
+        title: const Text('보드게임 목록', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: Icon(_showSearchOptions ? Icons.search_off : Icons.search),
@@ -163,13 +164,17 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var filteredData = filterData(snapshot.data!);
-                  return ListView.builder(
+                  return ListView.separated(
+                    padding: const EdgeInsets.all(10),
                     controller: _scrollController,
                     itemCount: filteredData.length,
                     itemBuilder: (context, index) {
                       BoardGame game = filteredData[index];
                       return BoardGameTile(game: game);
                     },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 10);
+                    }
                   );
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
@@ -185,6 +190,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
 
   Widget _buildSearchOptions() {
     return Container(
+      color: Colors.deepOrangeAccent.withOpacity(0.2),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Wrap(
         spacing: 10,

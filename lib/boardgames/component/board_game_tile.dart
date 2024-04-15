@@ -1,3 +1,4 @@
+import 'package:daynyong_house_flutter/component/rounded_container.dart';
 import 'package:flutter/material.dart';
 
 import '../model/board_game.dart';
@@ -9,12 +10,10 @@ class BoardGameTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 0,
-      margin: const EdgeInsets.all(8.0),
+    return RoundedContainer(
+      backgroundColor: Colors.deepOrangeAccent.withOpacity(0.1),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
