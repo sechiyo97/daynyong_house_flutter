@@ -17,10 +17,10 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   late Future<List<BoardGame>> boardGames;
   final TextEditingController _searchNameController = TextEditingController();
 
-  List<String> playerCounts = ['전체', '1','2','3','4','5','6','7','8'];
+  List<String> playerCounts = ['전체', '1', '2', '3', '4', '5', '6', '7', '8'];
   String _selectedPlayerCount = '전체';
 
-  List<String> bestForCounts = ['전체', '1','2','3','4','5','6','7','8'];
+  List<String> bestForCounts = ['전체', '1', '2', '3', '4', '5', '6', '7', '8'];
   String _selectedBestForCount = '전체';
 
   List<String> categories = [
@@ -61,8 +61,8 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   }
 
   Future<List<BoardGame>> loadBoardGameCsvData() async {
-    final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house - boardgames.csv');
+    final csvDataString = await rootBundle
+        .loadString('assets/csv/daynyong-house - boardgames.csv');
     List<List<dynamic>> csvList =
         const CsvToListConverter().convert(csvDataString);
     return csvList.sublist(1).map((row) => BoardGame.fromCsvRow(row)).toList();
@@ -103,8 +103,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
             }
           } else {
             // game.playerCount가 단일 숫자인 경우
-            matchesPlayerCount =
-                game.playerCount == _selectedPlayerCount;
+            matchesPlayerCount = game.playerCount == _selectedPlayerCount;
           }
         }
       }
@@ -157,122 +156,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
       ),
       body: Column(
         children: [
-          if (_showSearchOptions)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                children: [
-                  const Text("게임 종류: "),
-                  DropdownButton<String>(
-                    value: _selectedSearchCategory,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedSearchCategory = value;
-                        });
-                      }
-                    },
-                    items: categories
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-          if (_showSearchOptions)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Text("긱 웨이트: "),
-                  DropdownButton<String>(
-                    value: _selectedGeekWeight,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedGeekWeight = value;
-                        });
-                      }
-                    },
-                    items: geekWeightCategories
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-          if (_showSearchOptions)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchNameController,
-                decoration: const InputDecoration(
-                  labelText: '이름으로 검색',
-                  suffixIcon: Icon(Icons.search),
-                ),
-                onChanged: (value) => setState(() {}),
-              ),
-            ),
-          if (_showSearchOptions)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Text("플레이 인원: "),
-                  DropdownButton<String>(
-                    value: _selectedPlayerCount,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedPlayerCount = value;
-                        });
-                      }
-                    },
-                    items: playerCounts
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-          if (_showSearchOptions)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Text("베스트 인원: "),
-                  DropdownButton<String>(
-                    value: _selectedBestForCount,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _selectedBestForCount = value;
-                        });
-                      }
-                    },
-                    items: bestForCounts
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
+          if (_showSearchOptions) _buildSearchOptions(),
           Expanded(
             child: FutureBuilder<List<BoardGame>>(
               future: boardGames,
@@ -293,6 +177,116 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
                 return const Center(child: CircularProgressIndicator());
               },
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchOptions() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Wrap(
+        spacing: 10,
+        children: [
+          TextField(
+            controller: _searchNameController,
+            decoration: const InputDecoration(
+              labelText: '이름으로 검색',
+              suffixIcon: Icon(Icons.search),
+            ),
+            onChanged: (value) => setState(() {}),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("게임 종류: "),
+              DropdownButton<String>(
+                value: _selectedSearchCategory,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedSearchCategory = value;
+                    });
+                  }
+                },
+                items: categories.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("긱 웨이트: "),
+              DropdownButton<String>(
+                value: _selectedGeekWeight,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedGeekWeight = value;
+                    });
+                  }
+                },
+                items: geekWeightCategories
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("플레이 인원: "),
+              DropdownButton<String>(
+                value: _selectedPlayerCount,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedPlayerCount = value;
+                    });
+                  }
+                },
+                items:
+                    playerCounts.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("베스트 인원: "),
+              DropdownButton<String>(
+                value: _selectedBestForCount,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedBestForCount = value;
+                    });
+                  }
+                },
+                items:
+                    bestForCounts.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
         ],
       ),
