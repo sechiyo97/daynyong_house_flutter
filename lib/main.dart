@@ -6,6 +6,7 @@ import 'package:daynyong_house_flutter/wishlists/wishlists_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'address/address_screen.dart';
 import 'main_screen.dart';
 
 void main() {
@@ -51,6 +52,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/schedule',
           page: () => const ScheduleScreen(),
+        ),
+        GetPage(
+          name: '/address',
+          page: () => const AddressScreen(),
         ),
       ],
     );

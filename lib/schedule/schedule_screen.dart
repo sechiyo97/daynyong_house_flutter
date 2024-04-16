@@ -1,11 +1,14 @@
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:daynyong_house_flutter/component/rounded_container.dart';
 import 'package:daynyong_house_flutter/schedule/model/schedule.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:url_launcher/url_launcher.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -233,7 +236,32 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
             ],
           ),
-          const Text('* 예약은 카카오톡 문의 주세요'),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('* 예약은 '),
+              const Text('카카오톡'),
+              const Text(' or '),
+              GestureDetector(
+                onTap: _openInstagramUrl,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset("assets/images/logo_instagram.svg", width: 15, height: 15,),
+                    const SizedBox(width: 2),
+                    const Text(
+                      '인스타그램',
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              const Text(' 문의 주세요')
+            ],
+          ),
           const SizedBox(height: 20),
           _selectedDayInfo(),
         ],
@@ -253,10 +281,21 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             "선택된 날짜: ${getDateString(_selectedDay)}",
           ),
           const SizedBox(height: 10),
-          Text("특이사항: ${hasExtraInfo ? _scheduleOfCurrentSelectedDay?.info : "없음"}"),
+          Text(
+              "특이사항: ${hasExtraInfo ? _scheduleOfCurrentSelectedDay?.info : "없음"}"),
         ],
       ),
     );
+  }
+
+  void _openInstagramUrl() async {
+    Uri uri = Uri.parse(
+        'https://www.instagram.com/sechiyo97?igsh=MTN6aHhmZGdkbTdrZg==');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $uri';
+    }
   }
 
   String getDateString(DateTime? day) {
