@@ -1,14 +1,16 @@
+import 'dart:convert';
+
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:daynyong_house_flutter/component/rounded_container.dart';
 import 'package:daynyong_house_flutter/schedule/model/schedule.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:csv/csv.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+
+import '../day_nyong_const.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -27,27 +29,28 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   void initState() {
     super.initState();
-    _loadEvents();
+    _loadScheduleFromSheet();
   }
 
-  // CSV 데이터로부터 이벤트 로드
-  void _loadEvents() async {
-    final rawData =
-        await rootBundle.loadString('assets/csv/daynyong-house - schedule.csv');
-    List<List<dynamic>> listData = const CsvToListConverter().convert(rawData);
-    List<Schedule> schedules = [];
-    for (var row in listData) {
-      try {
-        Schedule schedule = Schedule.fromCsvRow(row);
-        schedules.add(schedule);
-      } catch (e) {
-        // do nothing
-      }
-    }
+  void  _loadScheduleFromSheet() async {
+    final url = Uri.parse(
+        '$dayNyongSpreadSheet/values/schedule!A:C?key=$googleApiKey');
+    final response = await http.get(url);
 
-    setState(() {
-      _schedules = schedules;
-    });
+    if (response.statusCode == 200) {
+      final dynamic data = jsonDecode(response.body)['values'];
+      final List<List<dynamic>> rows = List<List<dynamic>>.from(data);
+
+      rows.removeAt(0);
+      List<Schedule> schedule = rows.map((row) {
+        return Schedule.fromGoogleSheetRow(row);
+      }).toList();
+      setState(() {
+        _schedules = schedule;
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {

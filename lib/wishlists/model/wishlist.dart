@@ -9,7 +9,7 @@ class Wishlist {
     this.link
   });
 
-  factory Wishlist.fromCsvRow(List<dynamic> row) {
+  factory Wishlist.fromGoogleSheetRow(List<dynamic> row) {
     return Wishlist(
       name: row[0].toString(),
       description: row[1].toString(),

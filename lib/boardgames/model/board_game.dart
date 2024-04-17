@@ -17,7 +17,7 @@ class BoardGame {
     required this.playTime,
   });
 
-  factory BoardGame.fromCsvRow(List<dynamic> row) {
+  factory BoardGame.fromGoogleSheetRow(List<dynamic> row) {
     return BoardGame(
       name: row[0].toString(),
       expansion: row[1].toString(),

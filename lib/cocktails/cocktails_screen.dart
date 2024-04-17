@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../component/custom_scaffold.dart';
+import '../day_nyong_const.dart';
 import 'component/cocktail_tile.dart';
 import 'model/cocktail.dart';
-import 'package:csv/csv.dart';
+import 'package:http/http.dart' as http;
 
 class CocktailsScreen extends StatefulWidget {
   const CocktailsScreen({Key? key}) : super(key: key);
@@ -19,19 +21,28 @@ class _CocktailsScreenState extends State<CocktailsScreen> {
   @override
   void initState() {
     super.initState();
-    cocktails = loadCocktailsCsvData().then((list) {
+    cocktails = loadCocktailsFromSheet().then((list) {
       // 알파벳 순으로 정렬
       // list.sort((a, b) => a.base.compareTo(b.base));
       return list;
     });
   }
 
-  Future<List<Cocktail>> loadCocktailsCsvData() async {
-    final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house - cocktails.csv');
-    List<List<dynamic>> csvList =
-        const CsvToListConverter().convert(csvDataString);
-    return csvList.sublist(1).map((row) => Cocktail.fromCsvRow(row)).toList();
+  Future<List<Cocktail>> loadCocktailsFromSheet() async {
+    final url = Uri.parse('$dayNyongSpreadSheet/values/cocktails!A:C?key=$googleApiKey');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic data = jsonDecode(response.body)['values'];
+      final List<List<dynamic>> rows = List<List<dynamic>>.from(data);
+
+      rows.removeAt(0);
+      return rows.map((row) {
+        return Cocktail.fromGoogleSheetRow(row);
+      }).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   @override

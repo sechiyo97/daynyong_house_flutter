@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:csv/csv.dart';
 import '../component/custom_scaffold.dart';
+import '../day_nyong_const.dart';
 import 'component/board_game_tile.dart';
 import 'model/board_game.dart';
+import 'package:http/http.dart' as http;
 
 class BoardGamesScreen extends StatefulWidget {
   const BoardGamesScreen({Key? key}) : super(key: key);
@@ -44,7 +46,7 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
   @override
   void initState() {
     super.initState();
-    boardGames = loadBoardGameCsvData();
+    boardGames = loadBoardGamesFromSheet();
     _scrollController.addListener(_scrollListener);
   }
 
@@ -60,12 +62,22 @@ class _BoardGamesScreenState extends State<BoardGamesScreen> {
     });
   }
 
-  Future<List<BoardGame>> loadBoardGameCsvData() async {
-    final csvDataString = await rootBundle
-        .loadString('assets/csv/daynyong-house - boardgames.csv');
-    List<List<dynamic>> csvList =
-        const CsvToListConverter().convert(csvDataString);
-    return csvList.sublist(1).map((row) => BoardGame.fromCsvRow(row)).toList();
+  Future<List<BoardGame>> loadBoardGamesFromSheet() async {
+    final url = Uri.parse(
+        '$dayNyongSpreadSheet/values/boardgames!A:H?key=$googleApiKey');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic data = jsonDecode(response.body)['values'];
+      final List<List<dynamic>> rows = List<List<dynamic>>.from(data);
+
+      rows.removeAt(0);
+      return rows.map((row) {
+        return BoardGame.fromGoogleSheetRow(row);
+      }).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   List<BoardGame> filterData(List<BoardGame> data) {

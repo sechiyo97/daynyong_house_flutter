@@ -1,9 +1,10 @@
 import 'package:daynyong_house_flutter/component/custom_appbar.dart';
+import 'package:daynyong_house_flutter/day_nyong_const.dart';
 import 'package:daynyong_house_flutter/restaurants/component/restaurant_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../component/custom_scaffold.dart';
-import 'package:csv/csv.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'model/restaurant.dart';
 
@@ -20,19 +21,28 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   @override
   void initState() {
     super.initState();
-    restaurants = loadRestaurantsCsvData().then((list) {
+    restaurants = loadRestaurantsFromSheet().then((list) {
       // 알파벳 순으로 정렬
       // list.sort((a, b) => a.base.compareTo(b.base));
       return list;
     });
   }
 
-  Future<List<Restaurant>> loadRestaurantsCsvData() async {
-    final csvDataString =
-        await rootBundle.loadString('assets/csv/daynyong-house - restaurants.csv');
-    List<List<dynamic>> csvList =
-        const CsvToListConverter().convert(csvDataString);
-    return csvList.sublist(1).map((row) => Restaurant.fromCsvRow(row)).toList();
+  Future<List<Restaurant>> loadRestaurantsFromSheet() async {
+    final url = Uri.parse('$dayNyongSpreadSheet/values/restaurants!A:C?key=$googleApiKey');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic data = jsonDecode(response.body)['values'];
+      final List<List<dynamic>> rows = List<List<dynamic>>.from(data);
+
+      rows.removeAt(0);
+      return rows.map((row) {
+        return Restaurant.fromGoogleSheetRow(row);
+      }).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   @override

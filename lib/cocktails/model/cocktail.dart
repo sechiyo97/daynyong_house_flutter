@@ -14,7 +14,7 @@ class Cocktail {
     return recipe!.entries.map((entry) => '${entry.key}(${toRecipeAmountDisplayString(entry.value)})').join(' + ');
   }
 
-  factory Cocktail.fromCsvRow(List<dynamic> row) {
+  factory Cocktail.fromGoogleSheetRow(List<dynamic> row) {
     String? recipeRawString = (row.length >= 3) ? row[2].toString() : null;
     Map<String, String>? recipe;
 
