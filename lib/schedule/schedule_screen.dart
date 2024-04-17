@@ -32,9 +32,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     _loadScheduleFromSheet();
   }
 
-  void  _loadScheduleFromSheet() async {
-    final url = Uri.parse(
-        '$dayNyongSpreadSheet/values/schedule!A:C?key=$googleApiKey');
+  void _loadScheduleFromSheet() async {
+    final url =
+        Uri.parse('$dayNyongSpreadSheet/values/schedule!A:C?key=$googleApiKey');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -244,17 +244,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('* 예약은 '),
-              const Text('카카오톡'),
-              const Text(' or '),
               GestureDetector(
-                onTap: _openInstagramUrl,
+                onTap: _openKakaoTalkOpenChat,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset("assets/images/logo_instagram.svg", width: 15, height: 15,),
+                    Image.asset("assets/images/logo_kakaotalk_small.png",
+                      width: 15,
+                      height: 15,
+                    ),
                     const SizedBox(width: 2),
                     const Text(
-                      '인스타그램',
+                      '카카오톡',
                       style: TextStyle(
                           decoration: TextDecoration.underline,
                           fontWeight: FontWeight.bold),
@@ -291,9 +292,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  void _openInstagramUrl() async {
-    Uri uri = Uri.parse(
-        'https://www.instagram.com/sechiyo97?igsh=MTN6aHhmZGdkbTdrZg==');
+  void _openKakaoTalkOpenChat() async {
+    Uri uri = Uri.parse(dayNyongOpenChatLink);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {

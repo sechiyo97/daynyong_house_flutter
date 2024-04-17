@@ -3,6 +3,8 @@ import 'package:daynyong_house_flutter/component/custom_appbar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../day_nyong_const.dart';
+
 class AddressScreen extends StatefulWidget {
   const AddressScreen({super.key});
 
@@ -25,13 +27,13 @@ class _AddressScreenState extends State<AddressScreen> {
             const Text("주소는 개인정보라 연락주세요 ㅋㅋ"),
             const SizedBox(height: 30),
             GestureDetector(
-              onTap: _openInstagramUrl,
+              onTap: _openKakaoTalkOpenChat,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SvgPicture.asset("assets/images/logo_instagram.svg",
+                  Image.asset("assets/images/logo_kakaotalk_large.png",
                       width: 40, height: 40),
                   const SizedBox(width: 10),
                   const Column(
@@ -39,15 +41,15 @@ class _AddressScreenState extends State<AddressScreen> {
                     children: [
                       Row(
                         children: [
-                          Text('인스타그램 ', style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text('카카오톡 ', style: TextStyle(fontWeight: FontWeight.bold),),
                           Text(
-                            '@sechiyo97',
+                            '@떼뇽하우스',
                             style: TextStyle(color: Colors.grey),
                           )
                         ],
                       ),
                       Text(
-                        "https://www.instagram.com/sechiyo97",
+                        dayNyongOpenChatLink,
                         style: TextStyle(decoration: TextDecoration.underline),
                       )
                     ],
@@ -61,9 +63,8 @@ class _AddressScreenState extends State<AddressScreen> {
     );
   }
 
-  void _openInstagramUrl() async {
-    Uri uri = Uri.parse(
-        'https://www.instagram.com/sechiyo97?igsh=MTN6aHhmZGdkbTdrZg==');
+  void _openKakaoTalkOpenChat() async {
+    Uri uri = Uri.parse(dayNyongOpenChatLink);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
