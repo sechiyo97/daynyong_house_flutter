@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     String imageName = 'assets/images/main_screen_image_$_imageIndex.jpeg';
     return CustomScaffold(
-      backgroundColor: Colors.black.withOpacity(0.05),
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(
         title: const Text("Day & Nyong & Q"),
         leading: IconButton(
