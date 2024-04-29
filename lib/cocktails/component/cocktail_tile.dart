@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:daynyong_house_flutter/cocktails/model/cocktail.dart';
+import 'package:daynyonghouse/cocktails/model/cocktail.dart';
 
 class CocktailTile extends StatefulWidget {
   final Cocktail cocktail;

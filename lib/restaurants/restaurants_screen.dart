@@ -1,6 +1,6 @@
-import 'package:daynyong_house_flutter/component/custom_appbar.dart';
-import 'package:daynyong_house_flutter/day_nyong_const.dart';
-import 'package:daynyong_house_flutter/restaurants/component/restaurant_tile.dart';
+import 'package:daynyonghouse/component/custom_appbar.dart';
+import 'package:daynyonghouse/day_nyong_const.dart';
+import 'package:daynyonghouse/restaurants/component/restaurant_tile.dart';
 import 'package:flutter/material.dart';
 import '../component/custom_scaffold.dart';
 import 'dart:convert';

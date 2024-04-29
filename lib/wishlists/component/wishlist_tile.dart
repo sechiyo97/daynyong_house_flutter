@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:daynyong_house_flutter/boardgames/component/link_icon.dart';
+import 'package:daynyonghouse/boardgames/component/link_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

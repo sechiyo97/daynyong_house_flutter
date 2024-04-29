@@ -1,4 +1,4 @@
-package com.example.daynyong_house_flutter
+package com.daynyong.daynyonghouse
 
 import io.flutter.embedding.android.FlutterActivity
 

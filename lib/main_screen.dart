@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:daynyong_house_flutter/component/custom_appbar.dart';
-import 'package:daynyong_house_flutter/component/custom_scaffold.dart';
+import 'package:daynyonghouse/component/custom_appbar.dart';
+import 'package:daynyonghouse/component/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

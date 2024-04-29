@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:daynyong_house_flutter/component/custom_appbar.dart';
-import 'package:daynyong_house_flutter/component/rounded_container.dart';
-import 'package:daynyong_house_flutter/schedule/model/schedule.dart';
+import 'package:daynyonghouse/component/custom_appbar.dart';
+import 'package:daynyonghouse/component/rounded_container.dart';
+import 'package:daynyonghouse/schedule/model/schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';

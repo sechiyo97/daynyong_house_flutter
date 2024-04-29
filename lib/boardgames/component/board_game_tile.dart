@@ -1,4 +1,4 @@
-import 'package:daynyong_house_flutter/component/rounded_container.dart';
+import 'package:daynyonghouse/component/rounded_container.dart';
 import 'package:flutter/material.dart';
 
 import '../model/board_game.dart';

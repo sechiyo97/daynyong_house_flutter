@@ -1,6 +1,6 @@
 
-import 'package:daynyong_house_flutter/boardgames/component/link_icon.dart';
-import 'package:daynyong_house_flutter/restaurants/model/restaurant.dart';
+import 'package:daynyonghouse/boardgames/component/link_icon.dart';
+import 'package:daynyonghouse/restaurants/model/restaurant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
