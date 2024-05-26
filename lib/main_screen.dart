@@ -38,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String imageName = 'assets/images/main_screen_image_$_imageIndex.jpeg';
+    String imageName = 'assets/image/main_screen_image_$_imageIndex.jpeg';
     return CustomScaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
@@ -103,6 +103,8 @@ class _MainScreenState extends State<MainScreen> {
             _buildMenuButton("방문 가능 일자", "/schedule"),
             const SizedBox(height: 20),
             _buildMenuButton("찾아오시는 길", "/address"),
+            const SizedBox(height: 20),
+            _buildMenuButton("도미니언 덱 빌더", "/dominion"),
           ],
         ),
       ),

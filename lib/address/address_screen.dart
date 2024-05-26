@@ -32,7 +32,7 @@ class _AddressScreenState extends State<AddressScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset("assets/images/logo_kakaotalk_large.png",
+                  Image.asset("assets/image/logo_kakaotalk_large.png",
                       width: 40, height: 40),
                   const SizedBox(width: 10),
                   const Column(

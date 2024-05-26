@@ -31,9 +31,13 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.5
+  get_it: ^7.6.7
+  getwidget: ^2.0.4
   url_launcher: ^6.2.5
   table_calendar: ^3.1.1
   flutter_svg: ^2.0.7
+  typicons_flutter: ^0.5.0
+  provider: ^6.0.0
   http: ^0.13.6
 
   # The following adds the Cupertino Icons font to your application.
@@ -63,7 +67,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
+    - assets/image/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -249,7 +249,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset("assets/images/logo_kakaotalk_small.png",
+                    Image.asset("assets/image/logo_kakaotalk_small.png",
                       width: 15,
                       height: 15,
                     ),
